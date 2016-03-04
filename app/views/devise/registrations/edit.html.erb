@@ -2,6 +2,11 @@
 
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
   <%= devise_error_messages! %>
+  
+  <div class="field">
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </div>
 
   <div class="field">
     <%= f.label :email %><br />
@@ -28,6 +33,7 @@
   </div>
 
   <div class="actions">
+    <br/>
     <%= f.submit "Update" %>
   </div>
 <% end %>
