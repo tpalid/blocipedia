@@ -31,7 +31,9 @@ source 'https://rubygems.org'
  # user authentication
  gem 'devise'
  # authorization
-  gem 'pundit'
+ gem 'pundit'
+ # stripe integration
+ gem 'stripe'
 
  group :development, :test do
    # Call 'byebug' anywhere in the code to stop execution and get a debugger console
