@@ -28,14 +28,13 @@ include ChargesHelper
     puts current_user.role
     flash[:notice] = "Your account has been upgraded!"
     redirect_to root_url
-  end
-
-  # Rescue message for card errors
-
-  rescue Stripe::CardError => e
+    
+    # Rescue message for card errors
+    rescue Stripe::CardError => e
     flash.now[:alert] = e.message
     redirect_to new_charge_path
-  
  
-end
+  end
+
+ end
 
