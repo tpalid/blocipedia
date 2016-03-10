@@ -17,6 +17,15 @@ admin = User.new(
 admin.skip_confirmation!
 admin.save!
 
+user = User.new(
+    name: "Admin",
+    email: "user@example.com",
+    password: "helloworld",
+    role: "standard"
+    )
+user.skip_confirmation!
+user.save!
+
 users = User.all
 
 20.times do

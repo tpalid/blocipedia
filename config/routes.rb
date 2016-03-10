@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
   
   resources :wikis
-  resources :charges, only: [:new, :create]
+
+  resource :subscription, only: [:new, :create, :destroy]
   
   devise_for :users
   get 'welcome/index'
