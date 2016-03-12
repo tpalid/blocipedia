@@ -26,6 +26,16 @@ user = User.new(
 user.skip_confirmation!
 user.save!
 
+stripe_user = User.new(
+    name: "stripe_user",
+    email: "stripeuser@stripe.com",
+    password: "helloworld",
+    customer_id: "cus_00000000000000",
+    role: "standard"
+    )
+stripe_user.skip_confirmation!
+stripe_user.save!
+
 users = User.all
 
 20.times do

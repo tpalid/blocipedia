@@ -1,8 +1,5 @@
 class SubscriptionsController < ApplicationController
 
-include SubscriptionsHelper
-
-
   def new
     @stripe_btn_data = {
       key: "#{ Rails.configuration.stripe[:publishable_key] }",
@@ -35,21 +32,11 @@ include SubscriptionsHelper
  
   end
   
-  def update
-    200
-  end
-    
-    
-  
   def destroy
     customer = Stripe::Customer.retrieve(current_user.customer_id)
-    subscription = customer.subscriptions.retrieve(current_user.subscription_id)
-    subscription.delete
-    #todo set customer.subscriptions.retrieve(current_user.subscription_id).delete(at_period_end: true)
-    #set up webhooks, so that downgrade happens when I recieve the info that the subscription has been cancelled
-    current_user.downgrade
-    #subscription is being deleted on stripe, but I'm getting an error, example: "Customer cus_83Jks51BpKLhYa does not have a subscription with ID sub_83JkuPx2vPc56w"
-    flash[:notice] = "Your premium subscription has been cancelled."
+    subscription = customer.subscriptions.retrieve(current_user.subscription_id).delete(at_period_end: true)
+
+    flash[:notice] = "Your premium subscription has been cancelled.  Your account will be downgraded at the end of this payment period."
     redirect_to root_url
     
     # Rescue message for card errors

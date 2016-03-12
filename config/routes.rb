@@ -4,6 +4,10 @@ Rails.application.routes.draw do
 
   resource :subscription, only: [:new, :create, :destroy]
   
+  namespace :api, defaults: {format: :json } do
+    match 'stripe_events', to: 'stripe_events#router', via: [:post]
+  end
+   
   devise_for :users
   get 'welcome/index'
 
