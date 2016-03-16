@@ -1,27 +1,24 @@
-class Subscription
-   
-  attr_accessor :customer_id, :user, :subscription_id, :current_period_end
+class Subscription < ActiveRecord::Base
   
-  def initialize(user_id, customer_id, subsciption_id, current_period_end)
-    @user_id = user_id
-    @customer_id = customer_id
-    @subscription_id = subscription_id
-    @current_period_end = current_period_end
-  end
+  belongs_to :user
+  before_save :upgrade_user
+  before_destroy :downgrade_user, :downgrade_wikis
   
   def upgrade_user
-    @user = User.find_by(id: @user_id)
-    puts @user
-    @user.update(
-      customer_id: @customer_id,
-      subscription_id: @subscription_id,
-      active_until: @current_period_end
-    )
+    # @user = self.user
+    # @user.update_attributes(role: "premium")
+    #causing weird repeating loop!
   end
-    
-    
   
+  def downgrade_user
+    @user = self.user
+    @user.update(role: "standard")
+  end
   
-  
+  def downgrade_wikis
+    @wikis = self.user.wikis
+    @wikis.update_all(private: false)
+  end
+ 
 end
     
