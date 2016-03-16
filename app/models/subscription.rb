@@ -1,27 +1,27 @@
 class Subscription
+   
+  attr_accessor :customer_id, :user, :subscription_id, :current_period_end
   
-  def upgrade(customer_id, subscription_id, current_period_end)
-    current_user.customer_id = customer_id
-    current_user.subscription_id = subscription_id
-    current_user.active_until = current_period_end
-    # current_user.role = "premium"
-    current_user.save
+  def initialize(user_id, customer_id, subsciption_id, current_period_end)
+    @user_id = user_id
+    @customer_id = customer_id
+    @subscription_id = subscription_id
+    @current_period_end = current_period_end
   end
   
-  def renew(active_until)
-    self.active_until = active_until
-    self.save
+  def upgrade_user
+    @user = User.find_by(id: @user_id)
+    puts @user
+    @user.update(
+      customer_id: @customer_id,
+      subscription_id: @subscription_id,
+      active_until: @current_period_end
+    )
   end
+    
+    
   
-  def downgrade
-    user.active_until = nil
-    user.role = "standard"
-    user.save
-  end
   
-  def self.find_by_customer_id(customer_id)
-    User.where(customer_id = customer_id)
-  end
-
+  
 end
     

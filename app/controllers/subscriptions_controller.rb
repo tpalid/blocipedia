@@ -1,4 +1,6 @@
 class SubscriptionsController < ApplicationController
+  
+  include SubscriptionsHelper
 
   def new
     @stripe_btn_data = {
@@ -16,12 +18,8 @@ class SubscriptionsController < ApplicationController
       plan: "blocipedia_subscription"
     )
     
-    current_user.upgrade(
-      customer.id,
-      customer.subscriptions.data[0].id, 
-      customer.subscriptions.data[0].current_period_end
-        )
-   
+    subscription = Subscription.create(current_user.id, customer.id, customer.subscriptions.data[0].id, customer.subscriptions.data[0].current_period_end)
+    
     flash[:notice] = "Your account has been upgraded!"
     redirect_to root_url
     
@@ -36,7 +34,7 @@ class SubscriptionsController < ApplicationController
     customer = Stripe::Customer.retrieve(current_user.customer_id)
     subscription = customer.subscriptions.retrieve(current_user.subscription_id).delete(at_period_end: true)
 
-    flash[:notice] = "Your premium subscription has been cancelled.  Your account will be downgraded at the end of this payment period."
+    flash[:notice] = "Your premium subscription has been cancelled.  Your account will be downgraded at the end of this payment period. At this time, all of your private wikis will be made public."
     redirect_to root_url
     
     # Rescue message for card errors

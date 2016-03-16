@@ -27,7 +27,7 @@
         <%= link_to "Upgrade to Premium", new_subscription_path %>
     <% end %>
     <% if current_user && current_user.customer_id != nil %>
-       <%= link_to "Cancel Subscription", subscription_path, method: :delete, data: {confirm: 'Are you sure you want to cancel your subscription?' } %>
+       <%= link_to "Cancel Subscription", subscription_path, method: :delete, data: {confirm: 'Are you sure you want to cancel your subscription?  If you chose to cancel, all of your private wikis will be made public, and all users will be able to view and edit these wikis.' } %>
     <% end %>
     
     </div>
