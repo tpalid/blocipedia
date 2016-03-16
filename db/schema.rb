@@ -11,7 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160316211107) do
+ActiveRecord::Schema.define(version: 20160316225726) do
+
+  create_table "collaborators", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "wiki_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "subscriptions", force: :cascade do |t|
     t.integer  "customer_id"

@@ -19,6 +19,6 @@ class Subscription < ActiveRecord::Base
     @wikis = self.user.wikis
     @wikis.update_all(private: false)
   end
- 
+  
 end
     

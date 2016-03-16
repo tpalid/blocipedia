@@ -1,17 +1,17 @@
 class ApplicationPolicy
   attr_reader :user, :record
-
+  
   def initialize(user, record)
     @user = user
     @record = record
   end
 
   def index?
-    false
+    true
   end
 
   def show?
-    scope.where(:id => record.id).exists? && user.present? 
+    scope.where(:id => record.id).exists?
   end
 
   def create?

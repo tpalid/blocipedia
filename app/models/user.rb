@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
          
   has_many :wikis
   has_one :subscription
+  has_many :wikis, through: :collaborators
   after_initialize :set_default_role
   
    

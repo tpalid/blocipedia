@@ -4,7 +4,7 @@ class Api::StripeEventsController < ApplicationController
     def router
         @event_json = JSON.parse(request.body.read)
         # @subscription = Subscription.find(customer_id: @event_json["customer"])
-        @subscription = Subscription.find_by(user_id: 1)
+        @subscription = Subscription.find(user_id: 1)
         if @event_json["type"] == "customer.subscription.deleted"
             @subscription.delete
             #should this be in a separate method?
