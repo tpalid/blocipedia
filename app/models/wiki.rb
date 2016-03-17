@@ -1,13 +1,14 @@
 class Wiki < ActiveRecord::Base
   belongs_to :user
+  has_many :collaborators
   has_many :users, through: :collaborators
   
   def public?
-    wiki.private == false
+    self.private == false
   end
   
   def private?
-    wiki.private == true
+    self.private == true
   end
   
  end

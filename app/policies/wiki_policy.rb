@@ -1,23 +1,17 @@
 class WikiPolicy < ApplicationPolicy
+    alias_method :wiki, :record
+
     
-    attr_reader :user, :wiki
-    
-    def show?
+     def show?
         if wiki.public?
-            user.present?
-        elsif wiki.private?
-            wiki.user == user || wiki.users.include?(user)
-        end
-    end
+             user.present?
+         elsif wiki.private?
+             wiki.user == user || @wiki.users.include?(user)
+         end
+     end
  
  
-    class Scope
-        attr_reader :user, :scope
-        
-        def initialize(user, scope)
-            @user = user
-            @scope = scope
-        end
+    class Scope < Scope
         
         def resolve
             wikis = []

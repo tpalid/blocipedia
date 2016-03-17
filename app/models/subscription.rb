@@ -1,12 +1,12 @@
 class Subscription < ActiveRecord::Base
   
   belongs_to :user
-  before_save :upgrade_user
+  after_save :upgrade_user
   before_destroy :downgrade_user, :downgrade_wikis
   
   def upgrade_user
-    # @user = self.user
-    # @user.update_attributes(role: "premium")
+    @user = self.user
+    @user.update_attributes(role: "premium")
     #causing weird repeating loop!
   end
   

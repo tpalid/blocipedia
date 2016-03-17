@@ -18,7 +18,12 @@ class SubscriptionsController < ApplicationController
       plan: "blocipedia_subscription"
     )
     
-    subscription = Subscription.create(current_user.id, customer.id, customer.subscriptions.data[0].id, customer.subscriptions.data[0].current_period_end)
+    subscription = Subscription.create(
+        user_id: current_user.id, 
+        customer_id: customer.id, 
+        subscription_id: customer.subscriptions.data[0].id, 
+        current_period_end: customer.subscriptions.data[0].current_period_end
+        )
     
     flash[:notice] = "Your account has been upgraded!"
     redirect_to root_url

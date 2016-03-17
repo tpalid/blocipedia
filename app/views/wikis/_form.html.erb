@@ -16,6 +16,9 @@
             <% end %>
         </div>
     <% end %>
+    
+    <%= render 'collaborators/form', locals: {collaborator: @collaborator} %>
+    
     <div class="form-group">
         <%= f.submit "Save", class: 'btn btn-success' %>
     </div>
