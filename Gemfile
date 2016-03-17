@@ -34,6 +34,8 @@ source 'https://rubygems.org'
  gem 'pundit'
  # stripe integration
  gem 'stripe'
+ #markdown
+ gem 'redcarpet'
 
  group :development, :test do
    # Call 'byebug' anywhere in the code to stop execution and get a debugger console
