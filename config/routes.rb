@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   
-  resources :wikis
+  resources :wikis do
+     resources :collaborators, only: [:index, :new, :create, :destroy]
+  end
 
   resource :subscription, only: [:new, :create, :destroy]
   

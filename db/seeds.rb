@@ -10,38 +10,55 @@ end
 
 admin = User.new(
     name: "Admin",
-    email: "admin@example.com",
+    email: "admin@email.com",
     password: "helloworld",
     role: "admin"
     )
 admin.skip_confirmation!
 admin.save!
 
-user = User.new(
-    name: "Admin",
-    email: "user@example.com",
+premium_user = User.new(
+    name: "Premium",
+    email: "premium@email.com",
     password: "helloworld",
-    role: "standard"
+    role: "premium"
     )
-user.skip_confirmation!
-user.save!
+premium_user.skip_confirmation!
+premium_user.save!
 
-stripe_user = User.new(
-    name: "stripe_user",
-    email: "stripeuser@stripe.com",
+standard_user = User.new(
+    name: "Standard",
+    email: "standard@email.com",
     password: "helloworld",
-    customer_id: "cus_00000000000000",
     role: "standard"
     )
-stripe_user.skip_confirmation!
-stripe_user.save!
+standard_user.skip_confirmation!
+standard_user.save!
 
 users = User.all
-
-20.times do
+premium_users = [admin, premium_user]
+10.times do
     Wiki.create!(
         title: Faker::Lorem.sentence,
         body: Faker::Lorem.paragraph,
-        user: users.sample
-        )
+        user: users.sample,
+            )
  end
+ 
+ 10.times do
+    Wiki.create!(
+        title: Faker::Lorem.sentence,
+        body: Faker::Lorem.paragraph,
+        user: premium_users.sample,
+        private: true
+            )
+ end
+ 
+ wikis = Wiki.all
+ 
+ 30.times do
+     Collaborator.create!(
+         user_id: users.sample.id,
+         wiki_id: wikis.sample.id
+         )
+     end
