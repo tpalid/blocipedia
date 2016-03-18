@@ -38,6 +38,8 @@ source 'https://rubygems.org'
  gem 'redcarpet'
  #readable urls
  gem 'friendly_id', '~> 5.1.0'
+ # pagination
+ gem 'will_paginate', '~> 3.0.5'
 
  group :development, :test do
    # Call 'byebug' anywhere in the code to stop execution and get a debugger console

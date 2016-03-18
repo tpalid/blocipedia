@@ -2,3 +2,4 @@
     <% @wikis.each do |wiki| %>
         <p><%= link_to wiki.title, [wiki] %></br><small><%= wiki.user.name %></small></p>
     <% end %>
+    <%= will_paginate @wikis %>
