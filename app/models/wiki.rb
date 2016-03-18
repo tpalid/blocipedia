@@ -9,13 +9,11 @@ class Wiki < ActiveRecord::Base
   #to ensure titles stay friendly, but are also unique
   def slug_candidates
     [ :title,
-      [:title, 2],
-      [:title, 3],
-      [:title, 4]
+      [:title, :id]
     ]
  
   end
-  
+ 
   #friendly_id's change when the title of a wiki changes
   def should_generate_new_friendly_id?
     title_changed?
