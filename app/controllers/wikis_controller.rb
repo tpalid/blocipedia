@@ -1,10 +1,15 @@
 class WikisController < ApplicationController
+  
   def index
    @wikis = policy_scope(Wiki)
   end
 
   def show
-     @wiki = Wiki.find(params[:id])
+    @wiki = Wiki.friendly.find(params[:id])
+    if request.path != wiki_path(@wiki)
+      return redirect_to @wiki, :status => :moved_permanently
+    end
+    #do I need to do this for edit, update, destroy?
      authorize @wiki
   end
 
@@ -27,15 +32,15 @@ class WikisController < ApplicationController
   end
   
   def edit
-    @wiki = Wiki.find(params[:id])
+    @wiki = Wiki.friendly.find(params[:id])
     authorize @wiki
   end
   
   def update
-    @wiki = Wiki.find(params[:id])
+    @wiki = Wiki.friendly.find(params[:id])
     if @wiki.update_attributes(wiki_params)
       flash[:notice] = "Wiki was updated"
-      redirect_to [:wiki]
+      redirect_to [@wiki]
     else
       flash[:error] = "There was an error updating the wiki. Please try again."
       render :edit
@@ -43,7 +48,7 @@ class WikisController < ApplicationController
   end
   
   def destroy
-    @wiki = Wiki.find(params[:id])
+    @wiki = Wiki.friendly.find(params[:id])
     if @wiki.destroy
       flash[:notice] = "\"#{@wiki.title}\" was deleted."
       render :index
@@ -55,6 +60,7 @@ class WikisController < ApplicationController
   
   private
   
+
   def wiki_params
     params.require(:wiki).permit(:title, :body, :private)
   end

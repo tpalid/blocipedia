@@ -36,6 +36,8 @@ source 'https://rubygems.org'
  gem 'stripe'
  #markdown
  gem 'redcarpet'
+ #readable urls
+ gem 'friendly_id', '~> 5.1.0'
 
  group :development, :test do
    # Call 'byebug' anywhere in the code to stop execution and get a debugger console
