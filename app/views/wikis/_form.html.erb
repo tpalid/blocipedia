@@ -9,7 +9,7 @@
         <%= f.text_area :body %>
     </div>
     
-    <% if current_user.admin? || (current_user.premium? && @wiki.user == current_user) %>
+    <% if current_user.admin? || (current_user.premium? && (@wiki.user == current_user || @wiki.user == nil)) %>
         <div class="form-group">
             <%= f.label :private, class: 'checkbox' do %>
                 <%= f.check_box :private %> Private?
