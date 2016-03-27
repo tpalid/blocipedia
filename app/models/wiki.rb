@@ -5,7 +5,7 @@ class Wiki < ActiveRecord::Base
   has_many :collaborators
   has_many :users, through: :collaborators
   after_initialize :set_default_privacy
-  
+
   #to ensure titles stay friendly, but are also unique
   def slug_candidates
     [ :title,

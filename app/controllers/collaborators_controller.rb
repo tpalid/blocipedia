@@ -11,36 +11,20 @@ class CollaboratorsController < ApplicationController
     
     def create
         @wiki = Wiki.friendly.find(params[:wiki_id])
-        @nonexistant_users_emails = []
-        @unsavable_collaborators = []
-        params[:emails].each do |email|
-            if email != ""
-                @user = User.find_by_email(email)
-                if @user
-                    @collaborator = Collaborator.find_or_create_by(
+        @user = User.find_by_email(params[:email])
+            if @user
+                 @collaborator = Collaborator.find_or_create_by(
                         user_id: @user.id,
                         wiki_id: @wiki.id)
-                    if @collaborator.save!
-            
-                    else
-                        @unsavable_collaborators << email
-                    end
+                if @collaborator.save
+                    flash[:notice]="#{@user.name} was added as a collaborator."
                 else
-                    @nonexistant_users_emails << email
+                    flash[:error]="There was an error adding #{@user.name} as a collaborator. Please try again."
                 end
+            else
+                flash[:error]= "#{params[:email]} is not a valid user."
             end
-        end
-                
-        if @unsavable_collaborators.empty? == false
-            flash[:error]= " #{@unsavable_collaborators.join " and " } could not be saved"
-        elsif @nonexistant_users_emails.empty? == false
-            flash[:error]= " #{@nonexistant_users_emails.join " and "} do not exist"
-        else
-            flash[:notice] ="The collaborators were saved successfully"
-        end
-        
-    
-        redirect_to @wiki
+        redirect_to wiki_collaborators_path(@wiki)
     end
     
     def destroy

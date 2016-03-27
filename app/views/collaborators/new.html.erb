@@ -1,9 +1,3 @@
 <h2>Add Collaborators</h2>
 
-<%= form_tag wiki_collaborators_path do %>
-    <div class="field">
-        <%= label_tag :email %>
-        <%= text_field_tag :email %>
-    </div>
-    <%= submit_tag "Add Collaborator", class: 'btn btn-success' %>
-<% end %>
+<%= render "collaborators/form" %>

@@ -1,14 +1,8 @@
-<%= form_tag @collaborator do %>
-    <div class='form_group'>
-        <%= label_tag :email %><br>
-        <%= text_field_tag :email %>
-    </div>
- <% end %>
- 
 
- 
- = form_tag @collaborator do
-     .form_group
-         = label_tag :email
-         %br
-         = text_field_tag :email
+ <%= form_tag wiki_collaborators_path do %>
+    <div class="field">
+        <p><%= label_tag :email %>
+        <%= text_field_tag :email %></p>
+    </div>
+    <%= submit_tag "Save", class: 'btn btn-success' %>
+<% end %>

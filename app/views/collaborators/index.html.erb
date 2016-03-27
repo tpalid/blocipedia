@@ -4,5 +4,6 @@
     <% if @wiki.user == current_user %>
         <small><%= link_to "Delete", wiki_collaborator_path(@wiki.id, user.id),  method: :delete, data: {confirm: 'Are you sure you want to delete this collaborator?' } %></small>
     <% end %>
-    </br>
 <% end %>
+<h2> Add a Collaborator </h2>
+<%= render "collaborators/form" %>
