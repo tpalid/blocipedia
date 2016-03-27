@@ -2,53 +2,63 @@ class CollaboratorsController < ApplicationController
     
     def index
         @wiki = Wiki.friendly.find(params[:wiki_id])
-        @collaborators = Collaborator.where(wiki_id: @wiki.id)
-        @user_collaborators = User.where(id: @collaborators.pluck(:user_id))
-        #need to find a way to delete users from the index- but I am iterating through a list of USERS in the index#view, not a list of collaborators. could I make this into a hash?
+        @collaborating_users = @wiki.users
     end
     
     def new
         @wiki = Wiki.friendly.find(params[:wiki_id])
-        @collaborator = Collaborator.new
     end
     
     def create
-        @user = User.find_by_email(params[:email])
         @wiki = Wiki.friendly.find(params[:wiki_id])
-        
-        #to ensure user exists
-        if @user
-            @collaborator = Collaborator.create(
-                user_id: @user.id,
-                wiki_id: @wiki.id)
-            if @collaborator.save
-                flash[:notice] = "Collaborator was saved."
-                redirect_to [@wiki]
-            else
-                flash[:error] = "There was an error saving the collaborator.  Please try again."
-                render :new
+        @nonexistant_users_emails = []
+        @unsavable_collaborators = []
+        params[:emails].each do |email|
+            if email != ""
+                @user = User.find_by_email(email)
+                if @user
+                    @collaborator = Collaborator.find_or_create_by(
+                        user_id: @user.id,
+                        wiki_id: @wiki.id)
+                    if @collaborator.save!
+            
+                    else
+                        @unsavable_collaborators << email
+                    end
+                else
+                    @nonexistant_users_emails << email
+                end
             end
-        else
-            flash[:error] = "That user does not exist."
-            render :new
         end
+                
+        if @unsavable_collaborators.empty? == false
+            flash[:error]= " #{@unsavable_collaborators.join " and " } could not be saved"
+        elsif @nonexistant_users_emails.empty? == false
+            flash[:error]= " #{@nonexistant_users_emails.join " and "} do not exist"
+        else
+            flash[:notice] ="The collaborators were saved successfully"
+        end
+        
+    
+        redirect_to @wiki
     end
     
     def destroy
-        @wiki = Wiki.friendly.find(params[:id])
-        @collaborator = Collaborator.find(params[:user_id])
+        @collaborator = Collaborator.find_by_wiki_id_and_user_id(params[:wiki_id], params[:id])
         if @collaborator.destroy
-            flash[:notice] = "The collaborator was deleted." #change this to make more sense!
-            render :index
-        elsif 
+            flash[:notice] = "The collaborator was deleted."
+            redirect_to wiki_collaborators_path
+        else
             flash[:notice] = "There was an error deleting the collaborator.  Please try again."
-            render :index
+            redirect_to wiki_collaborators_path
         end
     end
             
     private
     
-    
+    def collaborator_params(my_params)
+        my_params.permit(:user_id)
+    end
     #strong params?
     #nest this in a way that I get information from wiki?- checking on blocit
 end

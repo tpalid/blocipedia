@@ -1,6 +1,14 @@
 <%= form_tag @collaborator do %>
     <div class='form_group'>
-        <%= label_tag :email %></br>
+        <%= label_tag :email %><br>
         <%= text_field_tag :email %>
     </div>
  <% end %>
+ 
+
+ 
+ = form_tag @collaborator do
+     .form_group
+         = label_tag :email
+         %br
+         = text_field_tag :email
