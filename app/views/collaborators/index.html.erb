@@ -6,4 +6,4 @@
     <% end %>
 <% end %>
 <h2> Add a Collaborator </h2>
-<%= render "collaborators/form" %>
+<%= render "collaborators/form", locals: { wiki: @wiki, collaborator: @collaborator } %>

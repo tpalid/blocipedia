@@ -12,7 +12,9 @@
  *
  *= require_tree .
  *= require_self
+ *= require jquery-ui/autocomplete
  */
+  
  
 @import "bootstrap-sprockets";
 @import "bootstrap";

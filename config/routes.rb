@@ -1,14 +1,20 @@
 Rails.application.routes.draw do
   
   resources :wikis do
-     resources :collaborators, only: [:index, :new, :create, :destroy]
+     resources :collaborators, only: [:index, :new, :create, :destroy] do
+       get :autocomplete_user_email, on: :collection
+     end
   end
 
   resource :subscription, only: [:new, :create, :destroy]
   
+
+  
   namespace :api, defaults: {format: :json } do
     match 'stripe_events', to: 'stripe_events#router', via: [:post]
   end
+  
+
    
   devise_for :users
   get 'welcome/index'

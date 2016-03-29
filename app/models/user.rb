@@ -9,8 +9,8 @@ class User < ActiveRecord::Base
   has_one :subscription, autosave: false
   has_many :collaborators
   has_many :wikis, through: :collaborators
-  after_initialize :set_default_role
-  
+  after_create :set_default_role
+ 
    
   def renew(active_until)
     self.active_until = active_until

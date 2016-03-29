@@ -40,6 +40,10 @@ source 'https://rubygems.org'
  gem 'friendly_id', '~> 5.1.0'
  # pagination
  gem 'will_paginate', '~> 3.0.5'
+ #autocomplete
+ gem 'rails-jquery-autocomplete'
+ #needed for autocomplete
+ gem 'jquery-ui-rails'
 
  group :development, :test do
    # Call 'byebug' anywhere in the code to stop execution and get a debugger console
