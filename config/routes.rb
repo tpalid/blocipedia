@@ -3,6 +3,9 @@ Rails.application.routes.draw do
   resources :wikis do
      resources :collaborators, only: [:index, :new, :create, :destroy] do
        get :autocomplete_user_email, on: :collection
+       collection do
+         delete 'destroy_multiple'
+       end
      end
   end
 

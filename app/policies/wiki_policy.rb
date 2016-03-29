@@ -6,7 +6,7 @@ class WikiPolicy < ApplicationPolicy
         if wiki.public?
              user.present?
         elsif wiki.private?
-             wiki.user == user || @wiki.users.include?(user)
+             wiki.user == user || wiki.users.include?(user)
         end
      end
  

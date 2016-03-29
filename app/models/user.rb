@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable, :confirmable
          
   has_many :wikis
-  has_one :subscription, autosave: false
+  has_one :subscription, autosave: false, dependent: :destroy
   has_many :collaborators
   has_many :wikis, through: :collaborators
   after_create :set_default_role

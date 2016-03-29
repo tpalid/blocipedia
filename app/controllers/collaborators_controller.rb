@@ -3,8 +3,9 @@ class CollaboratorsController < ApplicationController
     
     def index
         @wiki = Wiki.friendly.find(params[:wiki_id])
-        @collaborator = Collaborator.new
+        @collaborators = @wiki.collaborators
         @collaborating_users = @wiki.users
+        @collaborator = Collaborator.new
     end
     
     def new
@@ -15,17 +16,21 @@ class CollaboratorsController < ApplicationController
     def create
         @wiki = Wiki.friendly.find(params[:wiki_id])
         @user = User.find_by_email(params[:user_email])
+            #to ensure user exists
             if @user
+                #check to see if collaborator already exits
                 @collaborator = Collaborator.find_by(
                     user_id: @user.id,
                     wiki_id: @wiki.id
                     )
                 if @collaborator
                     flash[:error]="#{@user.name} is already a collaborator on #{@wiki.title}."
+                #create collaborator
                 else
                     @collaborator = Collaborator.create(
                         user_id: @user.id,
                         wiki_id: @wiki.id)
+                    #save collaborator
                     if @collaborator.save
                         flash[:notice]="#{@user.name} was added as a collaborator."
                     else
@@ -33,7 +38,7 @@ class CollaboratorsController < ApplicationController
                     end
                 end
             else
-                flash[:error]= "#{params[:email]} is not a valid user."
+                flash[:error]= "#{params[:user_email]} is not a valid user."
             end
         redirect_to wiki_collaborators_path(@wiki)
     end
@@ -47,6 +52,11 @@ class CollaboratorsController < ApplicationController
             flash[:notice] = "There was an error deleting the collaborator.  Please try again."
             redirect_to wiki_collaborators_path
         end
+    end
+    
+    def destroy_multiple
+        Collaborator.destroy(params[:collaborator_ids])
+        redirect_to wiki_collaborators_path
     end
             
     private

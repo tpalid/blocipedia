@@ -1,18 +1,9 @@
-<% if false %>
- <%= form_tag wiki_collaborators_path do %>
-    <div class="field">
-        <p><%= label_tag :email %>
-        <%= autocomplete_field_tag :search, params[:search], autocomplete_email_path, {class: "search-query", tupe: "search"} %></p>
-    </div>
-    <%= submit_tag "Save", class: 'btn btn-success' %>
-<% end %>
-<% end %>
-
 <%= form_tag wiki_collaborators_path do %>
     <div class="field">
         <%= label_tag :user_email %>
         <%= autocomplete_field_tag :user_email, '', autocomplete_user_email_wiki_collaborators_path %>
     </div>
+    <br>
     <div class="actions">
         <%= submit_tag %>
     </div>
