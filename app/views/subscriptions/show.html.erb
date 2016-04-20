@@ -1,0 +1,12 @@
+<h2>Subscription Information</h2>
+<p> Your next monthly payment of $15 will be automatically withdrawn on <strong> <%= @subscription.period_end_date %></strong>.</p
+<p> If you choose to cancel your subscription, any private Wikis that you have created will become public. All other users will then be able to view and edit these wikis. </p>
+<p> Your private wikis are:</p>
+<ul>
+    <% @private_wikis.each do |wiki| %>
+        <li><%= wiki.title %> </li>
+    <% end %>
+</ul>
+<p id="cancel-subscription"><%= link_to "Cancel Subscription", subscription_path, method: :delete, data: {confirm: "Are you sure you want to cancel your subscription? If you proceed, all private wikis will be made public on #{@subscription.period_end_date}." } %></p>
+           
+

@@ -9,6 +9,11 @@ class SubscriptionsController < ApplicationController
       amount: Amount.default
     }
   end
+  
+  def show
+    @subscription = Subscription.find_by_user_id(current_user.id)
+    @private_wikis = Wiki.where(user_id: current_user.id).where(private: true)
+  end
  
   def create
   # creates a Stripe Customer object, for associating with the charge

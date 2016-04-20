@@ -11,25 +11,31 @@
   
 <div class="container">
    <%= render partial: 'shared/flashes' %>
-   <div class="pull-right user-info">
-   <% if current_user %>
-        Hello <%= current_user.name || current_user.email %>!
-        <%= link_to edit_user_registration_path(current_user), class: 'btn btn-primary btn-sm' do %>
-            <span class="glyphicon glyphicon-user"</span>
-        <% end %>
-        <%= link_to destroy_user_session_path, method: :delete, class: 'btn btn-primary btn-sm' do %>
-           <span class="glyphicon glyphicon-log-out"></span>
-        <% end %>
-    <% else %>
-        <%= link_to "Sign In",  new_user_session_path %> or <%= link_to "Sign Up", new_user_registration_path %>
-    <% end %>
-    <% if current_user && current_user.role == "standard" %>
-        <%= link_to "Upgrade to Premium", new_subscription_path %>
-    <% end %>
-    <% if current_user && current_user.role == "premium" %>
-       <%= link_to "Cancel Subscription", subscription_path, method: :delete, data: {confirm: 'Are you sure you want to cancel your subscription?  If you chose to cancel, all of your private wikis will be made public, and all users will be able to view and edit these wikis.' } %>
-    <% end %>
-    
+   <div class="container">
+       <ul class="nav nav-tabs">
+           <li><%= link_to "Home", root_path %></li>
+           <li><%= link_to "About", about_path %></li>
+           <li><%= link_to "Wikis", wikis_path %></li>
+           <% if current_user && current_user.premium? %>
+               <li><%= link_to "My Subscription", subscription_path %></li>
+            <% end %>
+           <div class="pull-right user-info">
+               <% if current_user %>
+                    Hello <%= current_user.name || current_user.email %>!
+                    <%= link_to edit_user_registration_path(current_user), class: 'btn btn-primary btn-sm' do %>
+                        <span class="glyphicon glyphicon-user"</span>
+                    <% end %>
+                    <%= link_to destroy_user_session_path, method: :delete, class: 'btn btn-primary btn-sm' do %>
+                       <span class="glyphicon glyphicon-log-out"></span>
+                    <% end %>
+                <% else %>
+                    <%= link_to "Sign In",  new_user_session_path %> or <%= link_to "Sign Up", new_user_registration_path %>
+                <% end %>
+                <% if current_user && current_user.role == "standard" %>
+                    <%= link_to "Upgrade to Premium", new_subscription_path %>
+                <% end %>
+            </div>
+        </ul>
     </div>
   <%= yield %>
 </div>
