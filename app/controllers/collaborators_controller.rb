@@ -26,6 +26,8 @@ class CollaboratorsController < ApplicationController
                 if @collaborator
                     flash[:error]="#{@user.name} is already a collaborator on #{@wiki.title}."
                 #create collaborator
+                elsif @user == current_user
+                     flash[:error]="You can already collaborate on this wiki!"
                 else
                     @collaborator = Collaborator.create(
                         user_id: @user.id,

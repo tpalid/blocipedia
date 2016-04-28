@@ -7,14 +7,16 @@
                 <tr>
                     <th>Name</td>
                     <th>Email</td>
-                    <th>Delete</td>
+                    <% if @wiki.user == current_user || current_user.admin? %>
+                        <th>Delete</td>
+                    <% end %>
                 </tr>
                 <tbody>
                 <% @collaborators.each do |collaborator| %>
                     <tr>
                         <td><%= collaborator.user.name %></td>
                         <td><%= collaborator.user.email %></td>
-                        <% if @wiki.user == current_user %>
+                        <% if @wiki.user == current_user || current_user.admin? %>
                         <td>
                            <%= check_box_tag "collaborator_ids[]", collaborator.id %>
                         </td>

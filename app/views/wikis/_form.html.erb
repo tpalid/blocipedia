@@ -22,6 +22,6 @@
     </div>
 <% end %>
 
-<% if @wiki.private? && @wiki.user == current_user %>
-    <%= link_to "Add Collaborators", new_wiki_collaborator_path(@wiki)%>
+<% if @wiki.private? && (@wiki.user == current_user || current_user.admin? == true) %>
+    <%= link_to "Edit Collaborators", wiki_collaborators_path(@wiki)%>
 <% end %>
