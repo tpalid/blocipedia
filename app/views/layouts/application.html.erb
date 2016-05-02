@@ -16,12 +16,18 @@
            <li><%= link_to "Home", root_path %></li>
            <li><%= link_to "About", about_path %></li>
            <li><%= link_to "Wikis", wikis_path %></li>
-           <% if current_user && current_user.premium? %>
+           <% if current_user %>
+               <li><%= link_to "New Wiki", new_wiki_path %></li>
+        <% end %>
+            <% if current_user && current_user.premium? %>
                <li><%= link_to "My Subscription", subscription_path %></li>
+            <% elsif current_user && current_user.standard? %>
+               <li><%= link_to "Upgrade to Premium", new_subscription_path %></li>
             <% end %>
+            
            <div class="pull-right user-info">
                <% if current_user %>
-                    Hello <%= current_user.name || current_user.email %>!
+                    Hello <%= !current_user.name.blank? ? current_user.name : current_user.email %>!
                     <%= link_to edit_user_registration_path(current_user), class: 'btn btn-primary btn-sm' do %>
                         <span class="glyphicon glyphicon-user"</span>
                     <% end %>
@@ -30,9 +36,6 @@
                     <% end %>
                 <% else %>
                     <%= link_to "Sign In",  new_user_session_path %> or <%= link_to "Sign Up", new_user_registration_path %>
-                <% end %>
-                <% if current_user && current_user.role == "standard" %>
-                    <%= link_to "Upgrade to Premium", new_subscription_path %>
                 <% end %>
             </div>
         </ul>

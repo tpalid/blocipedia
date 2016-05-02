@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
   has_one :subscription, autosave: false, dependent: :destroy
   has_many :collaborators, dependent: :destroy
   has_many :wikis, through: :collaborators
-  after_create :set_default_role
+  before_create :set_default_role
  
    
   def renew(active_until)

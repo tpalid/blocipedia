@@ -1,3 +1,11 @@
+<h3>With a Premium Account, for only $15/month, you can:</h3>
+<ul>
+ <li>Create private wikis.</li>
+ <li>Add other users as collaborators who can view and edit your private wikis.</li>
+ <li>Remove collaborators who ruin everything.</li>
+ <li>Tell the collaborators you removed that the wiki was deleted.</li>
+ <li>Celebrate your power.</li>
+</ul>
  <%= form_tag subscription_path do %>
    <h4>Upgrade to Premium</h4>
    <script class='stripe-button' src="https://checkout.stripe.com/checkout.js" data-key="<%= @stripe_btn_data[:key] %>" data-amount=<%= @stripe_btn_data[:amount] %> data-description="<%= @stripe_btn_data[:description] %>" ></script>
