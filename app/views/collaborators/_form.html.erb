@@ -4,6 +4,18 @@
         <%= autocomplete_field_tag :user_email, '', autocomplete_user_email_wiki_collaborators_path %>
     </div>
     <br>
+    <% if (current_user == @wiki.user) || (current_user.admin?) %>
+    
+        <% if false %>
+        <div class="field">
+            <%= radio_button_tag(:state, "viewer") %>
+            <%= label_tag(:state, "View Only") %>
+            <%= radio_button_tag(:state, "editor") %>
+            <%= label_tag(:state, "View and Edit") %>
+        </div>
+        <% end %>
+    <% end %>
+    <br>
     <div class="actions">
         <%= submit_tag %>
     </div>

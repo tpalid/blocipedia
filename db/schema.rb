@@ -11,13 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160318140908) do
+ActiveRecord::Schema.define(version: 20160510151519) do
 
   create_table "collaborators", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "wiki_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string   "state"
   end
 
   create_table "friendly_id_slugs", force: :cascade do |t|
@@ -34,8 +35,8 @@ ActiveRecord::Schema.define(version: 20160318140908) do
   add_index "friendly_id_slugs", ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
 
   create_table "subscriptions", force: :cascade do |t|
-    t.integer  "customer_id"
-    t.integer  "subscription_id"
+    t.string   "customer_id"
+    t.string   "subscription_id"
     t.integer  "current_period_end"
     t.integer  "user_id"
     t.datetime "created_at",         null: false

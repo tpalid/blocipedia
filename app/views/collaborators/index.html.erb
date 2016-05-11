@@ -5,10 +5,12 @@
             <%= form_tag destroy_multiple_wiki_collaborators_path, method: :delete do %>
             <table class="table table-bordered">
                 <tr>
-                    <th>Name</td>
-                    <th>Email</td>
-                    <% if @wiki.user == current_user || current_user.admin? %>
-                        <th>Delete</td>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Permission</th>
+                    <% if (@wiki.user == current_user) || (current_user.admin?) %>
+                        <th>Approve</th>
+                        <th>Delete</th>
                     <% end %>
                 </tr>
                 <tbody>
@@ -16,7 +18,24 @@
                     <tr>
                         <td><%= collaborator.user.name %></td>
                         <td><%= collaborator.user.email %></td>
+                        
+                        <td><%= collaborator.state != nil ? collaborator.state.capitalize : ""%></td>
                         <% if @wiki.user == current_user || current_user.admin? %>
+                        <td>
+                            <% if false %>
+                            <%= radio_button_tag(:"state_of_#{collaborator}", "viewer") %>
+                            <%= label_tag(:state, "View") %>
+                            <%= radio_button_tag(:"state_of_#{collaborator}", "editor") %>
+                            <%= label_tag(:state, "Edit") %>
+                            <%= form_tag edit_wiki_collaborator_path do %>
+                                <%= radio_button_tag(:"state_of_#{collaborator}", "viewer", collaborator.id ) %>
+                                <%= label_tag(:state, "View") %>
+                                <%= radio_button_tag(:"state_of_#{collaborator}", "editor", collaborator.id ) %>
+                                <%= label_tag(:state, "Edit") %>
+                            <% end %>
+                            <% end %>
+                            <%= check_box_tag "collaborator_ids[]", collaborator.id %>
+                        </td>
                         <td>
                            <%= check_box_tag "collaborator_ids[]", collaborator.id %>
                         </td>
@@ -25,9 +44,12 @@
                 <% end %>
             </tbody>
             </table>
-            <%= submit_tag "Delete Selected" %>
+            <%= submit_tag "Approve Selected", :name => "approve" %>
+            <%= submit_tag "Delete Selected" , :name => "delete" %>
             <% end %>
         <% end %>
-        <h2> Add a Collaborator </h2>
+   
+    <h2> Add a Collaborator </h2>
     <%= render "collaborators/form", locals: { wiki: @wiki, collaborator: @collaborator } %>
+     </div>
 </div>

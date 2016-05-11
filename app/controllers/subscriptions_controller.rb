@@ -25,7 +25,7 @@ class SubscriptionsController < ApplicationController
     
     subscription = Subscription.create(
         user_id: current_user.id, 
-        customer_id: customer.id, 
+        customer_id: customer.id,
         subscription_id: customer.subscriptions.data[0].id, 
         current_period_end: customer.subscriptions.data[0].current_period_end
         )
@@ -41,8 +41,9 @@ class SubscriptionsController < ApplicationController
   end
   
   def destroy
-    customer = Stripe::Customer.retrieve(current_user.customer_id)
-    subscription = customer.subscriptions.retrieve(current_user.subscription_id).delete(at_period_end: true)
+    subscription = Subscription.find_by_user_id(current_user.id)
+    customer = Stripe::Customer.retrieve(subscription.customer_id)
+    subscription = customer.subscriptions.retrieve(subscription.subscription_id).delete(at_period_end: true)
 
     flash[:notice] = "Your premium subscription has been cancelled.  Your account will be downgraded at the end of this payment period. At this time, all of your private wikis will be made public."
     redirect_to root_url

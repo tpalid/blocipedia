@@ -2,7 +2,8 @@
     user = User.new(
         name: Faker::Name.name,
         email: Faker::Internet.email,
-        password: Faker::Lorem.characters(10)
+        password: Faker::Lorem.characters(10),
+        role: "standard"
         )
     user.skip_confirmation!
     user.save!
@@ -62,3 +63,5 @@ premium_users = [admin, premium_user]
          wiki_id: wikis.sample.id
          )
      end
+     
+Subscription.create!(user_id: 1, customer_id: "cus_00000000000000")

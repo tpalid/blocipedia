@@ -4,7 +4,7 @@ class Collaborator < ActiveRecord::Base
     validates :wiki, presence: true
     validates :user, presence: true
     validates :wiki, uniqueness: { scope: :user }
-    
+
     # def user_email
     #     user.try(:email)
     # end
