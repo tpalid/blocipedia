@@ -25,7 +25,11 @@ class WikisController < ApplicationController
     @wiki.user = current_user
     if @wiki.save
       flash[:notice] = "Wiki was saved!"
-      redirect_to [@wiki]
+      if @wiki.private
+        redirect_to [@wiki, :collaborators]
+      else
+        redirect_to [@wiki]
+      end
     else
       flash[:notice] = "There was an error saving the wiki. Please try again."
       render :new

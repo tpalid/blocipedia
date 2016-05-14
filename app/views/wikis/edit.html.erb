@@ -1,2 +1,8 @@
 <h1>Edit "<%= @wiki.title %>"</h1>
 <%= render "form" %>
+
+<% if @wiki.private? && (@wiki.user == current_user || current_user.admin? == true) %>
+    <%= link_to "Edit Collaborators", wiki_collaborators_path(@wiki), class: "btn btn-success" %>
+<% elsif @wiki.private? && (policy(@wiki).view? || policy(@wiki).edit?) %>
+    <%= link_to "Suggest Collaborators", wiki_collaborators_path(@wiki), class: "btn btn-success" %>
+<% end %>

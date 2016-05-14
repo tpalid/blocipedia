@@ -13,11 +13,7 @@ class CollaboratorsController < ApplicationController
         @collaborator = Collaborator.new
     end
     
-    def edit
-        puts "HELLO"
-    end
-    
-    def create
+     def create
         @wiki = Wiki.friendly.find(params[:wiki_id])
         @user = User.find_by_email(params[:user_email])
         if params[:approve]
@@ -35,8 +31,9 @@ class CollaboratorsController < ApplicationController
                         user_id: @user.id,
                         wiki_id: @wiki.id
                         )
+                        @name = !@user.name.blank? ? @user.name : @user.email
                     if @collaborator
-                        flash[:error]="#{@user.name} is already a collaborator on #{@wiki.title}."
+                        flash[:error]="#{@name} is already a collaborator on #{@wiki.title}."
                     #create collaborator
                     elsif @user == current_user
                          flash[:error]="You can already collaborate on this wiki!"
@@ -47,7 +44,11 @@ class CollaboratorsController < ApplicationController
                             state: @state)
                         #save collaborator
                         if @collaborator.save
-                            flash[:notice]="#{@user.name} was added as a collaborator."
+                            if @collaborator.state == "suggested"
+                                flash[:notice]="#{@name} was suggested as a collaborator and is waiting for appproval by the wiki's creator."
+                            else
+                                flash[:notice]="#{@name} was added as a collaborator."
+                            end
                         else
                             flash[:error]="There was an error adding #{@user.name} as a collaborator. Please try again."
                         end
@@ -60,9 +61,13 @@ class CollaboratorsController < ApplicationController
     end
     
     def destroy
-        @collaborator = Collaborator.find_by_wiki_id_and_user_id(params[:wiki_id], params[:id])
+        @collaborator = Collaborator.find(params[:id])
+        @user = User.find(@collaborator.user_id)
+        @name = !@user.name.blank? ? @user.name : @user.email
+        
+        puts @collaborator
         if @collaborator.destroy
-            flash[:notice] = "The collaborator was deleted." #pluralize?
+            flash[:notice] = "#{@name} was deleted as a collaborator."
             redirect_to wiki_collaborators_path
         else
             flash[:notice] = "There was an error deleting the collaborator.  Please try again."
@@ -76,8 +81,12 @@ class CollaboratorsController < ApplicationController
     
     def update
         @collaborator = Collaborator.find(params[:id])
-        if @collaborator.update_attributes(params[:state]) #write params allowing at bottom?
-            flash[:notice] 
+        if @collaborator.update_attributes(collaborator_params)
+            flash[:notice] = "Collaborator was approved."
+            redirect_to wiki_collaborators_path
+        elsif
+            flash[:error] = "There was an error approving the collaborator." 
+            redirect_to wiki_collaborators_path
         end
     end
     
@@ -92,6 +101,11 @@ class CollaboratorsController < ApplicationController
     def collaborator_params(my_params)
         my_params.permit(:user_id)
     end
+    
+    def collaborator_params
+        params.require(:collaborator).permit(:user_id, :wiki_id, :state)
+    end
+
     #strong params?
     #nest this in a way that I get information from wiki?- checking on blocit
 end

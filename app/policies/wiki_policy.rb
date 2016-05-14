@@ -1,7 +1,7 @@
 class WikiPolicy < ApplicationPolicy
     
     alias_method :wiki, :record
-
+   
      def show?
         if wiki.public?
              user.present?
@@ -9,9 +9,16 @@ class WikiPolicy < ApplicationPolicy
              wiki.user == user || wiki.users.include?(user) || user.admin?
         end
      end
+     
+     def edit?
+         if wiki.public?
+             user.present?
+         elsif wiki.private?
+            wiki.user == user || user.admin? || collaborator.state == "edit"
+        end
+    end
  
- 
-    class Scope < Scope
+     class Scope < Scope
         
         def resolve
             wikis = []
@@ -34,5 +41,10 @@ class WikiPolicy < ApplicationPolicy
             end
             wikis
         end
+    end
+    
+private
+    def collaborator
+	    @collaborator ||= Collaborator.find_by(user_id: user.id, wiki_id: record.id)
     end
 end

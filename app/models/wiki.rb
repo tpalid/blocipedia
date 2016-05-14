@@ -6,6 +6,10 @@ class Wiki < ActiveRecord::Base
   has_many :users, through: :collaborators
   after_initialize :set_default_privacy
 
+  scope :editable, -> { joins(:collaborators).where("collaborators.state = ?", "edit") }
+  scope :suggested, -> { joins(:collaborators).where("collaborators.state = ?", "suggested") }
+  
+  
   #to ensure titles stay friendly, but are also unique
   def slug_candidates
     [ :title,
@@ -30,5 +34,7 @@ class Wiki < ActiveRecord::Base
   def private?
     self.private == true
   end
+  
+  
   
 end

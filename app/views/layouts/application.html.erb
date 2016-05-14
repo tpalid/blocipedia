@@ -18,13 +18,12 @@
            <li><%= link_to "Wikis", wikis_path %></li>
            <% if current_user %>
                <li><%= link_to "New Wiki", new_wiki_path %></li>
-        <% end %>
+            <% end %>
             <% if current_user && current_user.premium? %>
                <li><%= link_to "My Subscription", subscription_path %></li>
             <% elsif current_user && current_user.standard? %>
                <li><%= link_to "Upgrade to Premium", new_subscription_path %></li>
             <% end %>
-            
            <div class="pull-right user-info">
                <% if current_user %>
                     Hello <%= !current_user.name.blank? ? current_user.name : current_user.email %>!
@@ -39,8 +38,18 @@
                 <% end %>
             </div>
         </ul>
+        <br>
+      <% if current_user && current_user.premium? %>
+               <% Wiki.where(user_id: current_user.id).suggested.uniq.each do |wiki| %>
+                    <% if wiki %>
+                        <p>You have collaborators awaiting approval on the following private wiki(s):
+                           <%= link_to "#{wiki.title}", wiki_collaborators_path(wiki) %>
+                        </p>
+                    <% end %>
+                <% end %>
+            <% end %>
     </div>
-  <%= yield %>
+     <%= yield %>
 </div>
 
 </body>

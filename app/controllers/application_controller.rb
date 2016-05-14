@@ -4,11 +4,11 @@ class ApplicationController < ActionController::Base
   include Pundit
   protect_from_forgery with: :exception
   before_action :configure_permitted_parameters, if: :devise_controller?
-  
+ 
   #error messages for users not authorized to take certain actions
   rescue_from Pundit::NotAuthorizedError do |exception|
-     redirect_to root_url, alert: exception.message
-   end
+    redirect_to root_url, alert: exception.message
+  end
    
  
    protected
@@ -17,4 +17,5 @@ class ApplicationController < ActionController::Base
      devise_parameter_sanitizer.for(:sign_up) << :name
      devise_parameter_sanitizer.for(:account_update) << :name
    end
+  
 end

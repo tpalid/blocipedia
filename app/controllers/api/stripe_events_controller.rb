@@ -18,5 +18,6 @@ class Api::StripeEventsController < ApplicationController
         redirect_to root_url
         #need to render something, or it will look for a template and find that there is no router template- find more logical thing to render!
     end
+    
   
 end
