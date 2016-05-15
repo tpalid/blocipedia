@@ -6,6 +6,7 @@ class CollaboratorsController < ApplicationController
         @collaborators = @wiki.collaborators
         @collaborating_users = @wiki.users
         @collaborator = Collaborator.new
+        authorize @collaborators
     end
     
     def new

@@ -43,7 +43,7 @@
             </table>
         <% end %>
     
-    <% if @wiki.user == current_user %>
+    <% if policy(@collaborators).edit? %>
         <h2> Add a Collaborator </h2>
     <% else %>
         <h2> Suggest a Collaborator </h2>
