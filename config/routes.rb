@@ -9,7 +9,7 @@ Rails.application.routes.draw do
      end
   end
 
-  resource :subscription, only: [:show, :new, :create, :destroy]
+  resource :subscription
   
 
   

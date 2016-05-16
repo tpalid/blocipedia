@@ -41,6 +41,33 @@ class SubscriptionsController < ApplicationController
  
   end
   
+  def edit
+      @subscription = @subscription = Subscription.find_by_user_id(current_user) 
+      @stripe_btn_data = {
+      key: "#{ Rails.configuration.stripe[:publishable_key] }",
+      description: "Blocipedia Membership - #{current_user.name}",
+      amount: Amount.default
+    }
+  end
+    
+  
+  def update
+    @subscription = Subscription.find_by_user_id(current_user.id)
+    @customer = Stripe::Customer.retrieve(@subscription.customer_id)
+    stripe_subscription = @customer.subscriptions.retrieve(@subscription.subscription_id)
+    stripe_subscription.plan = "blocipedia_subscription"
+    if stripe_subscription.save
+      @subscription.update(status: "active")
+      flash[:notice] = "Your subscription has been resumed!  Your private wikis will remain private, and your next payment will be due #{@subscription.period_end_date}"
+      redirect_to subscription_path(@subscription)
+    else
+      flash[:notice] = "There was an error resuming your subscription. Please try again."
+      redirect_to subscription_path(@subscription)
+    end
+      
+  end
+    
+ 
   def destroy
     subscription = Subscription.find_by_user_id(current_user.id)
     customer = Stripe::Customer.retrieve(subscription.customer_id)

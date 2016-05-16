@@ -25,6 +25,8 @@
                 <% end %>
             </ul>
         <% end %>
+    <p>Resume subscription to prevent private wikis from becoming public:</p>
+    <%= link_to "Resume Subscription", subscription_path(@subscription), method: :put %>
 <% end %>
 
            
