@@ -15,7 +15,11 @@ class WikiPolicy < ApplicationPolicy
              user.present?
          elsif wiki.private?
             wiki.user == user || user.admin? || collaborator.state == "edit"
-        end
+         end
+     end
+    
+    def destroy?
+         wiki.user == user || user.admin?
     end
  
      class Scope < Scope
@@ -41,7 +45,7 @@ class WikiPolicy < ApplicationPolicy
             end
             wikis
         end
-    end
+     end
     
 private
     def collaborator

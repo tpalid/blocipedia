@@ -17,7 +17,6 @@ class WikisController < ApplicationController
   def new
     @wiki = Wiki.new
     authorize @wiki
-    @collaborator = Collaborator.new
   end
   
   def create
@@ -25,7 +24,9 @@ class WikisController < ApplicationController
     @wiki.user = current_user
     if @wiki.save
       flash[:notice] = "Wiki was saved!"
-      if @wiki.private
+      if @wiki.private?
+        @collaborator = Collaborator.new(wiki_id: @wiki.id, user_id: current_user.id, state: "creator")
+        @collaborator.save
         redirect_to [@wiki, :collaborators]
       else
         redirect_to [@wiki]
@@ -44,6 +45,10 @@ class WikisController < ApplicationController
   def update
     @wiki = Wiki.friendly.find(params[:id])
     if @wiki.update_attributes(wiki_params)
+      if @wiki.private?
+        @collaborator = Collaborator.new(wiki_id: @wiki.id, user_id: current_user.id, state: "creator")
+        @collaborator.save!
+      end
       flash[:notice] = "Wiki was updated"
       redirect_to [@wiki]
     else
@@ -56,10 +61,10 @@ class WikisController < ApplicationController
     @wiki = Wiki.friendly.find(params[:id])
     if @wiki.destroy
       flash[:notice] = "\"#{@wiki.title}\" was deleted."
-      render :index
+      redirect_to wikis_path
     else
       flash[:notice] = "There was an error deleting the wiki."
-      render :show
+      redirect_to [@wiki]
     end
   end
   

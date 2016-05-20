@@ -8,19 +8,7 @@ module ApplicationHelper
     end
     
     def wikis_needing_approval(user)
-        @wikis = Wiki.where(user_id: user.id)
-        @wikis.each do |wiki|
-            @collaborators = wiki.collaborators
-            if @collaborators.empty?
-                return nil
-            end
-            @colllaborators.each do |collaborator|
-                if collaborator.state == "suggested"
-                    @wikis_needing_approval << collaborator.wiki_id
-                end
-            end
-        end
-        @wikis_needing_approval
+        wikis = Wiki.where(user_id: user.id).select {|wiki| wiki.collaborators.where(state: 'suggested').present? }
     end
         @collaborators
     #     puts @wikis

@@ -1,10 +1,16 @@
 class CollaboratorPolicy < ApplicationPolicy
     
     alias_method :collaborator, :record
+
+    def edit?
+ 
+    end
     
-    # def edit?
-    #     wiki.user == user || user.admin?
-    # end
+    def destroy?
+        collaborator.creator? == "false"
+    end
+    
+    
 
 end
 
