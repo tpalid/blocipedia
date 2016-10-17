@@ -3,6 +3,8 @@ source 'https://rubygems.org'
  # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
  gem 'rails', '4.2.5'
  
+ gem 'rails-assets-tether', '>= 1.1.0'
+ 
  group :production do
    gem 'pg'
    #use postgresql as database with heroku in production

@@ -52,7 +52,8 @@ class WikisController < ApplicationController
       flash[:notice] = "Wiki was updated"
       redirect_to [@wiki]
     else
-      flash[:error] = "There was an error updating the wiki. Please try again."
+      flash[:error] = "There was an error updating th
+      e wiki. Please try again."
       render :edit
     end
   end

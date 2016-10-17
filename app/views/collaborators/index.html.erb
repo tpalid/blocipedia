@@ -34,9 +34,7 @@
                                 <td></td>
                             <% end %>
                         <td>
-                            <% if policy(collaborator).destroy? %>
-                                <%= link_to "Delete", [collaborator.wiki, collaborator], method: :delete, class: 'btn btn-danger', data: {confirm: 'Are you sure you want to delete this collaborator?' } %>
-                            <% end %>
+                            <%= link_to "Delete", [collaborator.wiki, collaborator], method: :delete, class: 'btn btn-danger', data: {confirm: "Are you sure you want to delete #{collaborator.user.name} as a collaborator on #{@wiki.title}?" } %>
                         </td>
                         <% end %>
                     </tr>
@@ -45,7 +43,7 @@
             </table>
         <% end %>
     
-    <% if policy(@collaborators).edit? %>
+    <% if policy(@wiki).destroy? %>
         <h2> Add a Collaborator </h2>
     <% else %>
         <h2> Suggest a Collaborator </h2>

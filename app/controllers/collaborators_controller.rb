@@ -19,6 +19,7 @@ class CollaboratorsController < ApplicationController
         @wiki = Wiki.friendly.find(params[:wiki_id])
         @user = User.find_by_email(params[:user_email])
         @state = params[:state]
+        @name = name(@user)
         #to ensure user exists
         if @user
             @collaborator = Collaborator.new(
@@ -43,18 +44,17 @@ class CollaboratorsController < ApplicationController
     
     def destroy
         @collaborator = Collaborator.find(params[:id])
-        @wiki = Wiki.friendly.find(params[:wiki_id])
-        authorize @collaborator
-        authorize @collaborator.wiki
-            @user = User.find(@collaborator.user_id)
-            @name = !@user.name.blank? ? @user.name : @user.email
-            if @collaborator.destroy
-                flash[:notice] = "#{@name} was deleted as a collaborator."
-                redirect_to wiki_collaborators_path
-            else
-                flash[:notice] = "There was an error deleting the collaborator.  Please try again."
-                redirect_to wiki_collaborators_path
-            end
+        @user = User.find(@collaborator.user_id)
+        @name = name(@user)
+        
+        puts @collaborator
+        if @collaborator.destroy
+            flash[:notice] = "#{@name} was deleted as a collaborator."
+            redirect_to wiki_collaborators_path
+        else
+            flash[:notice] = "There was an error deleting the collaborator.  Please try again."
+            redirect_to wiki_collaborators_path
+        end
     end
     
     def edit
@@ -71,5 +71,11 @@ class CollaboratorsController < ApplicationController
             flash[:error] = "There was an error approving the collaborator." 
             redirect_to wiki_collaborators_path
         end
+    end
+    
+    private
+    
+    def name(user)
+        @name = view_context.display(user)
     end
  end
